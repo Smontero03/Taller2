@@ -12,6 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Taller2">
         <activity
+            android:name=".screens.WaitingRoomScreen"
+            android:exported="false"
+            android:label="@string/title_activity_waiting_room_screen"
+            android:theme="@style/Theme.Taller2" />
+        <activity
+            android:name=".screens.CreateRoomScreen"
+            android:exported="false"
+            android:label="@string/title_activity_create_room_screen"
+            android:theme="@style/Theme.Taller2" />
+        <activity
+            android:name=".screens.ui.theme.HomeScreen"
+            android:exported="false"
+            android:label="@string/title_activity_home_screen"
+            android:theme="@style/Theme.Taller2" />
+        <activity
+            android:name=".screens.RegisterScreen"
+            android:exported="false"
+            android:label="@string/title_activity_register_screen"
+            android:theme="@style/Theme.Taller2" />
+        <activity
+            android:name=".screens.LoginScreen"
+            android:exported="false"
+            android:label="@string/title_activity_login_screen"
+            android:theme="@style/Theme.Taller2" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

@@ -16,26 +16,61 @@ import com.example.taller2.ui.theme.Taller2Theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            Taller2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            AppNavigation()
         }
     }
-}
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun AppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "login"
+    ) {
+
+        composable("login") { LoginScreen(
+            onLoginSuccess = { navController.navigate("home") },
+            onGoToRegister = { navController.navigate("register") }
+        )}
+
+        composable("register") { RegisterScreen(
+            onRegisterSuccess = { navController.navigate("login") }
+        )}
+
+        composable("home") { HomeScreen(
+            onCreateRoom = { navController.navigate("create_room") },
+            onJoinRoom = { navController.navigate("join_room") }
+        )}
+
+        composable("create_room") { CreateRoomScreen(
+            onRoomCreated = { roomId ->
+                navController.navigate("waiting_room/$roomId")
+            }
+        )}
+
+        composable("join_room") { JoinRoomScreen(
+            onJoinSuccess = { roomId ->
+                navController.navigate("waiting_room/$roomId")
+            }
+        )}
+
+        composable("waiting_room/{roomId}") { backStackEntry ->
+            val roomId = backStackEntry.arguments?.getString("roomId")!!
+            WaitingRoomScreen(
+                roomId = roomId,
+                onStartGame = {
+                    navController.navigate("game/$roomId")
+                }
+            )
+        }
+
+        composable("game/{roomId}") { backStackEntry ->
+            val roomId = backStackEntry.arguments?.getString("roomId")!!
+            GameScreen(roomId = roomId)
+        }
+    }
 }
 
 @Preview(showBackground = true)

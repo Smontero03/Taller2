@@ -1,4 +1,4 @@
-package com.example.taller2.screens
+package com.example.taller2.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,10 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun CreateRoomScreen(
@@ -31,13 +29,5 @@ fun CreateRoomScreen(
         Text("Crear Sala", fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(30.dp))
         Button(onClick = { onRoomCreated("some_room_id") }) { Text("Generar ID de Sala") }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CreateRoomScreenPreview() {
-    Taller2Theme {
-        CreateRoomScreen(onRoomCreated = {})
     }
 }

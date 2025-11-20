@@ -3,25 +3,15 @@ package com.example.taller2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.taller2.screens.CreateRoomScreen
-import com.example.taller2.screens.GameScreen
-import com.example.taller2.screens.HomeScreen
-import com.example.taller2.screens.JoinRoomScreen
-import com.example.taller2.screens.LoginScreen
-import com.example.taller2.screens.RegisterScreen
-import com.example.taller2.screens.WaitingRoomScreen
-import com.example.taller2.ui.theme.Taller2Theme
+import com.example.taller2.view.GameScreen
+import com.example.taller2.view.HomeScreen
+import com.example.taller2.view.LoginScreen
+import com.example.taller2.view.RegisterScreen
+import com.example.taller2.view.WaitingRoomScreen
 import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
@@ -44,7 +34,7 @@ fun AppNavigation() {
     ) {
 
         composable("login") { LoginScreen(
-            onLoginSuccess = { navController.navigate("home") },
+            onLoginSuccess = { navController.navigate("home") { popUpTo("login") { inclusive = true } } },
             onGoToRegister = { navController.navigate("register") }
         )}
 
@@ -53,18 +43,7 @@ fun AppNavigation() {
         )}
 
         composable("home") { HomeScreen(
-            onCreateRoom = { navController.navigate("create_room") },
-            onJoinRoom = { navController.navigate("join_room") }
-        )}
-
-        composable("create_room") { CreateRoomScreen(
-            onRoomCreated = { roomId ->
-                navController.navigate("waiting_room/$roomId")
-            }
-        )}
-
-        composable("join_room") { JoinRoomScreen(
-            onJoinSuccess = { roomId ->
+            onRoomNavigation = { roomId ->
                 navController.navigate("waiting_room/$roomId")
             }
         )}

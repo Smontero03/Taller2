@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
-fun RegisterScreen(
-    onRegisterSuccess: () -> Unit
+fun JoinRoomScreen(
+    onJoinSuccess: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -29,22 +29,18 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Crear Cuenta", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(40.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Nombre") })
-        Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Correo") })
-        Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Contraseña") })
-        Spacer(Modifier.height(24.dp))
-        Button(onClick = onRegisterSuccess) { Text("Registrarse") }
+        Text("Unirse a Sala", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(30.dp))
+        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Código de Sala") })
+        Spacer(Modifier.height(20.dp))
+        Button(onClick = { onJoinSuccess("some_room_id") }) { Text("Entrar") }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun RegisterScreenPreview() {
+fun JoinRoomScreenPreview() {
     Taller2Theme {
-        RegisterScreen(onRegisterSuccess = {})
+        JoinRoomScreen(onJoinSuccess = {})
     }
 }

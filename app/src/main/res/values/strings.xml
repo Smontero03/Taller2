@@ -5,4 +5,6 @@
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_create_room_screen">CreateRoomScreen</string>
     <string name="title_activity_waiting_room_screen">WaitingRoomScreen</string>
+    <string name="title_activity_join_room_screen">JoinRoomScreen</string>
+    <string name="title_activity_game_screen">GameScreen</string>
 </resources>

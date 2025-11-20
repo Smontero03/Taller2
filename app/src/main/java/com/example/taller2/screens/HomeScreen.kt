@@ -15,22 +15,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.taller2.screens.ui.theme.ui.theme.Taller2Theme
-
-
+import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
-fun HomeScreen(userName: String = "Jugador") {
+fun HomeScreen(
+    onCreateRoom: () -> Unit,
+    onJoinRoom: () -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Bienvenido, $userName", fontSize = 26.sp, fontWeight = FontWeight.Bold)
+        Text("Bienvenido", fontSize = 26.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(40.dp))
-        Button(onClick={}) { Text("Crear Sala") }
+        Button(onClick = onCreateRoom) { Text("Crear Sala") }
         Spacer(Modifier.height(20.dp))
-        Button(onClick={}) { Text("Unirse a Sala") }
+        Button(onClick = onJoinRoom) { Text("Unirse a Sala") }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    Taller2Theme {
+        HomeScreen(onCreateRoom = {}, onJoinRoom = {})
+    }
+}

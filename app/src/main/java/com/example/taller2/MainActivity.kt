@@ -11,15 +11,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.taller2.screens.CreateRoomScreen
+import com.example.taller2.screens.GameScreen
+import com.example.taller2.screens.HomeScreen
+import com.example.taller2.screens.JoinRoomScreen
+import com.example.taller2.screens.LoginScreen
+import com.example.taller2.screens.RegisterScreen
+import com.example.taller2.screens.WaitingRoomScreen
 import com.example.taller2.ui.theme.Taller2Theme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent {
             AppNavigation()
         }
     }
+}
 
 @Composable
 fun AppNavigation() {
@@ -70,13 +83,5 @@ fun AppNavigation() {
             val roomId = backStackEntry.arguments?.getString("roomId")!!
             GameScreen(roomId = roomId)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Taller2Theme {
-        Greeting("Android")
     }
 }

@@ -10,6 +10,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,8 +24,11 @@ import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun JoinRoomScreen(
+    viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onJoinSuccess: (String) -> Unit
 ) {
+    var roomId by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,9 +38,19 @@ fun JoinRoomScreen(
     ) {
         Text("Unirse a Sala", fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(30.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Código de Sala") })
+        OutlinedTextField(
+            value = roomId,
+            onValueChange = { roomId = it },
+            label = { Text("Código de Sala") }
+        )
         Spacer(Modifier.height(20.dp))
-        Button(onClick = { onJoinSuccess("some_room_id") }) { Text("Entrar") }
+        Button(onClick = {
+            viewModel.joinRoom(roomId) { success ->
+                if (success) {
+                    onJoinSuccess(roomId)
+                }
+            }
+        }) { Text("Entrar") }
     }
 }
 
@@ -41,6 +58,6 @@ fun JoinRoomScreen(
 @Composable
 fun JoinRoomScreenPreview() {
     Taller2Theme {
-        JoinRoomScreen(onJoinSuccess = {})
+        JoinRoomScreen(onJoinSuccess = {}, viewModel = GameViewModel())
     }
 }

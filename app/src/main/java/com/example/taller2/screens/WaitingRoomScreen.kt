@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -19,9 +22,17 @@ import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun WaitingRoomScreen(
+    viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     roomId: String,
     onStartGame: () -> Unit
 ) {
+    val players by viewModel.players.observeAsState(initial = emptyList())
+
+    DisposableEffect(roomId) {
+        viewModel.listenPlayers(roomId)
+        onDispose { }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,13 +45,15 @@ fun WaitingRoomScreen(
         Spacer(Modifier.height(20.dp))
         Text("Jugadores conectados:")
         Spacer(Modifier.height(20.dp))
-// Aquí se cargaría la lista real de jugadores
-        repeat(4) {
-            Text("Jugador ${(it + 1)}", fontSize = 20.sp)
+        players.forEach { player ->
+            Text(player.name, fontSize = 20.sp)
             Spacer(Modifier.height(8.dp))
         }
         Spacer(Modifier.height(30.dp))
-        Button(onClick = onStartGame) { Text("Iniciar Partida") }
+        Button(onClick = {
+            viewModel.startGame(roomId)
+            onStartGame()
+        }) { Text("Iniciar Partida") }
     }
 }
 
@@ -48,6 +61,6 @@ fun WaitingRoomScreen(
 @Composable
 fun WaitingRoomScreenPreview() {
     Taller2Theme {
-        WaitingRoomScreen(roomId = "test_room", onStartGame = {})
+        WaitingRoomScreen(roomId = "test_room", onStartGame = {}, viewModel = GameViewModel())
     }
 }

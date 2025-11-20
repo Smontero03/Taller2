@@ -19,6 +19,7 @@ import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun CreateRoomScreen(
+    viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onRoomCreated: (String) -> Unit
 ) {
     Column(
@@ -30,7 +31,11 @@ fun CreateRoomScreen(
     ) {
         Text("Crear Sala", fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(30.dp))
-        Button(onClick = { onRoomCreated("some_room_id") }) { Text("Generar ID de Sala") }
+        Button(onClick = {
+            viewModel.createRoom { roomId ->
+                onRoomCreated(roomId)
+            }
+        }) { Text("Generar ID de Sala") }
     }
 }
 
@@ -38,6 +43,6 @@ fun CreateRoomScreen(
 @Composable
 fun CreateRoomScreenPreview() {
     Taller2Theme {
-        CreateRoomScreen(onRoomCreated = {})
+        CreateRoomScreen(onRoomCreated = {}, viewModel = GameViewModel())
     }
 }

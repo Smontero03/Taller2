@@ -10,6 +10,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,8 +24,13 @@ import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun RegisterScreen(
+    viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onRegisterSuccess: () -> Unit
 ) {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,13 +40,31 @@ fun RegisterScreen(
     ) {
         Text("Crear Cuenta", fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(40.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Nombre") })
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Nombre") }
+        )
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Correo") })
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Correo") }
+        )
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Contraseña") })
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Contraseña") }
+        )
         Spacer(Modifier.height(24.dp))
-        Button(onClick = onRegisterSuccess) { Text("Registrarse") }
+        Button(onClick = {
+            viewModel.register(name, email, password) { success ->
+                if (success) {
+                    onRegisterSuccess()
+                }
+            }
+        }) { Text("Registrarse") }
     }
 }
 
@@ -45,6 +72,6 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreview() {
     Taller2Theme {
-        RegisterScreen(onRegisterSuccess = {})
+        RegisterScreen(onRegisterSuccess = {}, viewModel = GameViewModel())
     }
 }

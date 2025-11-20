@@ -11,6 +11,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -21,9 +25,13 @@ import com.example.taller2.ui.theme.Taller2Theme
 
 @Composable
 fun LoginScreen(
+    viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onLoginSuccess: () -> Unit,
     onGoToRegister: () -> Unit
 ) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,11 +41,25 @@ fun LoginScreen(
     ) {
         Text("Emoji Guess", fontSize = 32.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(40.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Correo") })
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Correo") }
+        )
         Spacer(Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {}, label = { Text("Contraseña") })
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Contraseña") }
+        )
         Spacer(Modifier.height(24.dp))
-        Button(onClick = onLoginSuccess) { Text("Ingresar") }
+        Button(onClick = {
+            viewModel.login(email, password) { success ->
+                if (success) {
+                    onLoginSuccess()
+                }
+            }
+        }) { Text("Ingresar") }
         TextButton(onClick = onGoToRegister) { Text("Registrarse") }
     }
 }
@@ -46,6 +68,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     Taller2Theme {
-        LoginScreen(onLoginSuccess = {}, onGoToRegister = {})
+        LoginScreen(onLoginSuccess = {}, onGoToRegister = {}, viewModel = GameViewModel())
     }
 }
